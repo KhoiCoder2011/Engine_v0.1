@@ -1,4 +1,4 @@
-from Settings import *
+from Setting import *
 
 speed = SPEED
 sensitivity = SENSITIVITY

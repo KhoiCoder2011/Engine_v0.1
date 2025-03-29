@@ -1,16 +1,16 @@
+from Delete_cache import *
+from Setting import *
+from GUI.GUI import *
+from lib.lib import mgl
+from Input.Keyboard import Keyboard
+from Shader import ShaderProgram
+from Manager.Scene import Scene
+from Manager.Audio import *
+from Camera import Camera
+from Light import Light
 import sys
 import glfw
-sys.path.append('d:/Dev/Python/Modern_GL/Engine_GLFW/source')
-from Camera import Camera
-from Manager.Audio import *
-from Manager.Scene import Scene
-from Shader import ShaderProgram
-from Input.Keyboard import Keyboard
-from lib.lib import mgl
-from GUI.GUI import *
-from Settings import *
-from Delete_cache import *
-
+sys.path.append('D:/Dev/Python/Modern_GL/Engine_GLFW/source')
 
 class Engine:
     def __init__(self):
@@ -22,17 +22,19 @@ class Engine:
         glfw.window_hint(glfw.OPENGL_PROFILE, glfw.OPENGL_CORE_PROFILE)
         glfw.window_hint(glfw.DEPTH_BITS, 24)
         glfw.window_hint(glfw.RESIZABLE, glfw.FALSE)
-
         self.window = glfw.create_window(
             *RESOLUTION, f"Modern Engine | OpenGL {GL_MAJOR}.{GL_MINOR}", None, None)
         if not self.window:
             glfw.terminate()
             raise Exception("GLFW window can not be created!")
-
+        
         glfw.set_window_pos(self.window, 15, 30)
         glfw.make_context_current(self.window)
+        #glfw.set_input_mode(self.window, glfw.CURSOR, glfw.CURSOR_DISABLED)
 
         self.ctx = mgl.create_context()
+        #self.ctx.viewport = (343, HEIGHT - 501, 958, 501)
+
         self.ctx.multisample = False
         self.ctx.enable(mgl.DEPTH_TEST | mgl.BLEND)
         self.ctx.gc_mode = 'auto'
@@ -41,13 +43,13 @@ class Engine:
         self.last_time = glfw.get_time()
         self.fps = 0
         self.last_x, self.last_y = RESOLUTION
-
         self.on_init()
 
     def on_init(self):
         self.camera = Camera()
         self.shader = ShaderProgram(self)
         self.prog = self.shader.get_program()
+        self.light = Light()
         self.scene = Scene(self)
         self.keyboard = Keyboard(self)
         self.gui = GUI(self)
@@ -64,6 +66,7 @@ class Engine:
         self.time += self.delta_time
         self.fps = round(1 / self.delta_time, 3)
         self.last_time = current_time
+        self.scene.update()
 
     def destroy(self):
         self.ctx.release()
@@ -86,7 +89,7 @@ class Engine:
 
         glfw.poll_events()
 
-        if glfw.window_should_close(self.window):
+        if glfw.window_should_close(self.window) or self.keyboard.is_click(glfw.KEY_ESCAPE):
             self.destroy()
             self.scene.save()
             glfw.terminate()
@@ -95,7 +98,7 @@ class Engine:
         mouse_x, mouse_y = glfw.get_cursor_pos(self.window)
         xoffset = mouse_x - self.last_x
         yoffset = self.last_y - mouse_y
-        # self.camera.process_mouse_movement(xoffset, yoffset)
+        self.camera.process_mouse_movement(xoffset, yoffset)
         self.last_x, self.last_y = mouse_x, mouse_y
 
     def run(self):
@@ -106,3 +109,6 @@ class Engine:
             glfw.swap_buffers(self.window)
 
         glfw.terminate()
+
+e = Engine()
+e.run()

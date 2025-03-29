@@ -1,33 +1,4 @@
-'''
-a (m/s^2)
-v (m/s)
-t (s)
-g (m/s^2)
-
-GRAVITY = 9.81
-acceleration = 0
-velocity = 0
-time = 0
-
-'''
-
 import glm
-SCALE = 250
-GRAVITY = -9.81 / SCALE
-
-
-class Rigidbody:
-    def __init__(self, object):
-        self.objecxt = object
-        self.position = object.position
-        self.velocity = glm.vec3(0)
-        self.is_gravity = True
-
-    def update(self, time):
-        if self.is_gravity:
-            self.position += self.velocity
-            self.velocity.y = round(GRAVITY * round(time, 3), 3)
-
 
 class Ray:
     def __init__(self, origin: glm.vec3, target: glm.vec3):
@@ -61,9 +32,3 @@ class Ray:
             z += self.dz * self.diff
 
         return False
-
-
-'''
-ray = Ray(glm.vec3(0, 0, 0), glm.vec3(1, 1, 2))
-print(ray.check_collision(glm.vec3(0.5, 0.5, 1)))
-'''

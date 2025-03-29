@@ -1,5 +1,5 @@
 from Model import *
-from Settings import *
+from Setting import *
 import threading
 from numba import prange
 

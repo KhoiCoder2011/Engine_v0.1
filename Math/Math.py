@@ -4,16 +4,18 @@ from opensimplex import OpenSimplex
 
 
 class Noise:
-    def __init__(self, seed=1):
+    def __init__(self, seed: int = 1):
         self.seed = seed
         self.noise = OpenSimplex(self.seed)
 
-    def _noise2(self, x: glm.vec2) -> float:
-        return self.noise.noise2(x.x, x.y)
+    def _noise2(self, x, z) -> float:
+        return self.noise.noise2(x, z)
 
-    def _noise3(self, x: glm.vec3) -> float:
-        return self.noise.noise3(x.x, x.y, x.z)
+    def _noise3(self, x, y, z) -> float:
+        return self.noise.noise3(x, y, z)
 
+    def _sin_cos(self, x, z):
+        return glm.sin(x * 0.3) + glm.cos(z * 0.3)
 
 class Math:
     def sqrt(x: float) -> float:

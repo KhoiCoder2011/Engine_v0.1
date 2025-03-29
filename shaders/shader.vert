@@ -8,7 +8,6 @@ layout(location = 3) in vec3 in_normal;
 out vec3 frag_color;
 out vec3 v_normal;
 out vec3 v_fragPos;
-
 out vec2 uv_0;
 
 uniform mat4 m_model;

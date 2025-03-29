@@ -2,7 +2,7 @@ import imgui
 from imgui.integrations.pygame import PygameRenderer
 import pygame as pg
 import moderngl as mgl
-from Settings import config, config_path
+from Setting import config, config_path
 from Manager.build import EngineBuilder
 
 
